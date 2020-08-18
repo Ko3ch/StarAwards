@@ -36,6 +36,7 @@ class Post(models.Model):
     '''
     image = models.ImageField(upload_to='images/',null=True)
     title = models.CharField(max_length =30)
+    location = models.CharField(max_length =30,null=True)
     description = models.CharField(max_length=100)
     url = models.URLField(max_length=255)
     user = models.ForeignKey(User,on_delete=models.CASCADE,null=True)
