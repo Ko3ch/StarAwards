@@ -1,0 +1,12 @@
+{% extends 'base.html'%}
+{% load crispy_forms_tags %}
+{% block content%}
+<div class="row">
+    <h3 style="color: green; margin-top: 150px;">You have been logged out successfully!</h3>
+    <div class="content-section">
+            <div class="border-top pt-3">
+                <small class="text-muted"><a href="{% url 'star-home' %}">Head home</a></small>
+            </div>
+    </div>
+</div>
+{% endblock%}
