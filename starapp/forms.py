@@ -13,7 +13,7 @@ class UserRegisterForm(UserCreationForm):
 class UpdateUserProfileForm(forms.ModelForm):
     class Meta:
         model = Profile
-        fields = ['name', 'profile_picture', 'bio', 'contact']
+        fields = ('first_name', 'second_name', 'profile_picture', 'bio', 'contact',)
 
 class RatingsForm(forms.ModelForm):
     class Meta:
@@ -23,4 +23,7 @@ class RatingsForm(forms.ModelForm):
 class PostForm(forms.ModelForm):
     class Meta:
         model = Post
-        fields = ('photo', 'title', 'url', 'description',)
+        fields = ('image', 'title', 'url', 'description','location',)
+        widgets = {
+            'description': forms.Textarea(attrs={'class':'form-control','required': 'false'})
+        }
