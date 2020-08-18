@@ -1,0 +1,28 @@
+{% extends 'base.html' %}
+{% block content%}
+<div class="row" style="margin-top: 80px; justify-content: center; color: white;">
+    <form action="{%url 'star-post-project'%}" method="post" enctype="multipart/form-data">
+        {%csrf_token%}
+        <div class="image mb-3" style="margin-top: 50px;">
+          {{form.image}}
+        </div>
+        <div class="image-title mb-3">
+        <label for="name">title</label><br>   
+        {{ form.title }}
+        </div>
+        <div class="image-name">
+            <label for="name">url</label><br> 
+            {{ form.url }}
+        </div>
+        <div class="image-location mt-3">
+            <label for="name">location</label><br> 
+            {{ form.location }}
+        </div>
+        <div class="caption mt-4">
+            <label for="">description</label>
+          {{form.description}}
+        </div>
+          <input style="margin-top: 10px; margin-left: 100px;" type="submit" class="btn btn-outline-warning" value="Submit">
+    </form>
+</div>
+{% endblock%}
