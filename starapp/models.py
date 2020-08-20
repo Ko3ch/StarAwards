@@ -39,7 +39,7 @@ class Post(models.Model):
     location = models.CharField(max_length =30,null=True)
     description = models.CharField(max_length=100)
     url = models.URLField(max_length=255)
-    user = models.ForeignKey(User,on_delete=models.CASCADE,null=True)
+    profile = models.ForeignKey(User,on_delete=models.CASCADE,null=True)
     pub_date = models.DateTimeField(auto_now_add=True)
 
     class meta:
@@ -84,10 +84,7 @@ class Rating(models.Model):
     usability = models.IntegerField(choices=rating, blank=True)
     content = models.IntegerField(choices=rating, blank=True)
     score = models.FloatField(default=0, blank=True)
-    design_average = models.FloatField(default=0, blank=True)
-    usability_average = models.FloatField(default=0, blank=True)
-    content_average = models.FloatField(default=0, blank=True)
-    user = models.ForeignKey(User, on_delete=models.CASCADE, null=True)
+    profile = models.ForeignKey(User, on_delete=models.CASCADE, null=True)
     post = models.ForeignKey(Post, on_delete=models.CASCADE, null=True)
 
     def save_rating(self):
