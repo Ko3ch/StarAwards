@@ -1,8 +1,31 @@
 {% extends 'base.html' %}
 {% block content %}
-<div class="row" style="margin-top: 120px;">
-    <div class="container">
-        <h1 style="color: greenyellow;">Tom Tom</h1>
+<div class="row" style="margin-top: 120px;color: white;">
+    <div class="container text-center">
+        <h1>{{ user.profile.first_name }} {{ user.profile.second_name }}</h1>
+        <img src="https://cdn.pixabay.com/photo/2020/07/19/09/55/man-5419522__340.jpg" alt="" height="150px" width="150px" style="border-radius: 150px;">
+        <p>{{ user.profile }}</p>
+    </div>
+    <div class="row">
+        {% for post in posts %}
+        <div class="column cardcolumn mb-5">
+            <div class="card">
+                <a href="{% url 'star-project' post.id %}">
+                    <img src="{{ post.image.url }}" class="card-img-top" alt="" id="imgProj">
+                </a>
+                <div class="card-body">
+                    <div class="col-xs-4">
+                        <h3>{{ post.title }}</h3>
+                        <p>{{ post.location }}</p>    
+                    </div>
+                    <div class="col-xs-5"></div>
+                    <div class="col-xs-3" style="float: right;">
+                        <div class="muted-text">{{ post.pub_date|date}}</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        {% endfor %}
     </div>
 </div>
 {% endblock %}

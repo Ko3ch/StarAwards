@@ -1,9 +1,9 @@
-{% extends 'base.html' %}
-{% load static%}
-{{block.super}}
-{% block content%}
-<div class="row cardsrow" style="margin-top: 120px;">
-    {% for post in posts %}
+{% extends 'base.html'%}
+{% block content %}
+
+<h3 style="color: white; margin-top: 120px;"><i>Found {{ results.count }} results for <span style="color: yellow;">{{message}}</span></i></h3>
+<div class="row cardsrow">
+    {% for post in results %}
     <div class="column cardcolumn mb-5">
         <div class="card">
             <a href="{% url 'star-project' post.id %}">
@@ -19,8 +19,11 @@
                     <div class="muted-text">{{ post.pub_date|date}}</div>
                 </div>
             </div>
+            <div class="card-footer">
+                <p>BY: {{ post.user.username }}</p>
+            </div>
         </div>
     </div>
     {% endfor %}
-</div>  
+</div>
 {% endblock %}

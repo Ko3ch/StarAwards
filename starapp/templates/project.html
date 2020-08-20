@@ -1,4 +1,50 @@
 {% extends 'base.html'%}
 {% block content %}
-
+<div class="row" style="margin: 120px; color: white;">
+    <div class="container">
+        <a href="{{ post.url }}">
+            <img src="{{ post.image.url }}" alt="" width="100%" height="70%">
+        </a>
+        <div class="text-center" style="color: white;">
+            <hr>
+            <p>{{ post.title }}</p>
+            <p>{{ post.description }}</p>
+            <p>BY:{{ post.user }}</p>
+            <hr>
+            <h3 class="D-block mx-auto">Ratings Scores</h3>
+            {{ score }}
+            <hr>
+            <div class="row">
+                <div class="col-sm-4">
+                    Usability <br>
+                    <p style="color: yellow;">{{ usability }}</p>
+                </div>
+                <div class="col-sm-4">
+                    Content <br>
+                    <p style="color: yellow;">{{ content }}</p>
+                </div>
+                <div class="col-sm-4">
+                    Design <br>
+                    <p style="color: yellow;">{{ design }}</p>
+                </div>
+            </div>
+            <hr>
+            <h3 style="color: yellow;">Leave a rating</h3>
+            {% if rating_status %}
+            <h5>You have already voted</h5>
+            {% else %}
+            <form method="post" enctype="multipart/form-data" style="display: flex; flex-direction: column;">
+                {%csrf_token%}
+                <label for="usability">Usability</label>
+                {{ form.usability }} <br>
+                <label for="design">Design</label>
+                {{ form.design }} <br>
+                <label for="content">Content</label>
+                {{ form.content }} <br>
+                <input style="margin-top: 10px;" type="submit" class="btn btn-outline-warning" value="Rate">
+            </form>
+            {% endif %}
+        </div>
+    </div>
+</div>
 {% endblock %}
