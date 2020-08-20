@@ -1,1 +1,1 @@
-web: gunicorn starproject.wsgi:application --log-file -
+web: gunicorn starproject.wsgi --log-file -
