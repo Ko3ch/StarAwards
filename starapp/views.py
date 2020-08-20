@@ -1,9 +1,26 @@
-from django.shortcuts import render,redirect
+from django.shortcuts import render,redirect,get_object_or_404
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth.models import User
 from django.contrib import messages
 from . forms import UserRegisterForm,PostForm,UpdateUserProfileForm,RatingsForm
 from . models import Profile,Post,Rating
+from django.http import HttpResponseRedirect
+from rest_framework.response import Response
+from rest_framework.views import APIView
+from . serializers import PostsSerializer,ProfileSerializer
+from rest_framework import status
+
+class PostsList(APIView):
+    def get(self, request, format=None):
+        all_posts = Post.objects.all()
+        serializers = PostsSerializer(all_posts, many=True)
+        return Response(serializers.data)
+
+class ProfileList(APIView):
+    def get(self, request, format=None):
+        all_posts = Profile.objects.all()
+        serializers = ProfileSerializer(all_posts, many=True)
+        return Response(serializers.data)
 
 def home(request):
     posts = Post.all_posts().order_by('-pub_date')
@@ -17,12 +34,31 @@ def home(request):
         form = PostForm()
     return render(request, 'home.html', {'posts':posts})
 
-def project_by_id(request,id):
+@login_required(login_url="login")
+def project(request,id):
     post = Post.objects.get(id=id)
-    return render(request, 'project.html',{'posts':post})
+    ratings = Rating.objects.filter(profile=request.user, post=id).first()
+    rating_status = None
+    if ratings is None:
+        rating_status = False
+    else:
+        rating_status = True
+    if request.method == 'POST':
+        form = RatingsForm(request.POST)
+        if form.is_valid():
+            rate = form.save(commit=False)
+            rate.user = request.user
+            rate.post = post
+            rate.save()
+            return HttpResponseRedirect(request.path_info)
+    else:
+        form = RatingsForm()
+    return render(request, 'project.html',{'post': post,'form': form,'rating_status': rating_status})
 
-def profile(request):
-    return render(request, 'profile.html')
+def profile(request,id):
+    user = User.objects.get(id=id)
+    posts = Post.objects.filter(profile=user)
+    return render(request, 'profile.html',{'posts':posts,'user':user})
 
 @login_required(login_url="login")
 def post_project(request):
@@ -39,7 +75,15 @@ def post_project(request):
     return render(request,'new_post.html',{"form": form})
 
 def search_results(request):
-    pass
+    if 'search' in request.GET and request.GET['search']:
+        name = request.GET.get("search")
+        results = Post.search_project(name)
+        message = f'{name}'
+        return render(request, 'search.html', {'results':results,'message':message})
+    else:
+        message = f"No results for{name}"
+        return render(request, 'search.html', {'message': message})
+
 
 def register_view(request):
     if request.method == "POST":
